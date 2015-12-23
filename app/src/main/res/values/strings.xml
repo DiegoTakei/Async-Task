@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Async-Task</string>
     <string name="action_settings">Settings</string>
-    <string name="app_name">NotificationWearApp</string>
     <string name="notify">Notificação</string>
     <string name="asyncTask">Realizar Login</string>
 </resources>

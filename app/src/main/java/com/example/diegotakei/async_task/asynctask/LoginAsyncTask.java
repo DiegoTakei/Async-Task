@@ -39,9 +39,21 @@ public class LoginAsyncTask extends AsyncTask<String, Void, HttpURLConnection> {
 
         HttpURLConnection connection = null;
 
+        JSONObject jo = new JSONObject();
         try {
 
-            connection = HttpService.sendGetRequest("servicoservlet");
+            jo.put("nome", valores[0]);
+            jo.put("senha", valores[1]);
+
+
+        } catch (Exception e) {
+            Log.e("", "" + e.getMessage());
+        }
+
+        try {
+
+            connection = HttpService.sendGetRequest();
+            HttpService.sendJsonPostRequest("servicoservlet",jo);
 
         } catch (MalformedURLException ex) {
 
@@ -62,13 +74,19 @@ public class LoginAsyncTask extends AsyncTask<String, Void, HttpURLConnection> {
 
             int status = connection.getResponseCode();
 
-            Log.i("NotificationWearApp", "Status HTTP-Response: " + status);
-
             String contentValue = HttpService.getHttpContent(connection);
             JSONObject json = new JSONObject(contentValue);
 
-            String nome = json.getString("nome");
-            Toast.makeText(context, nome, Toast.LENGTH_LONG).show();
+
+            String senha = json.getString("senha");
+            if (status==200) {
+                String key = json.getString("key");
+                Toast.makeText(context, "Key: "+key, Toast.LENGTH_LONG).show();
+            }else{
+                String erro = json.getString("mensagem");
+                Toast.makeText(context, "Mensagem: "+erro, Toast.LENGTH_LONG).show();
+            }
+
 
         } catch (IOException e) {
 
@@ -79,4 +97,6 @@ public class LoginAsyncTask extends AsyncTask<String, Void, HttpURLConnection> {
             Log.e("NotificationWearApp", "JSONException");
         }
     }
+
+
 }
