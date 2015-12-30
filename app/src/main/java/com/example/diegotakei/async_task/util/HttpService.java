@@ -2,15 +2,10 @@ package com.example.diegotakei.async_task.util;
 
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,48 +20,36 @@ public class HttpService {
 
     private static final String URL_CONTEXT = "http://192.168.1.178:8080/rest-servlet-service/";
 
-    public static HttpURLConnection sendGetRequest()
+    public static Response sendJsonPostRequest(String service, JSONObject json)
             throws MalformedURLException, IOException {
 
         HttpURLConnection connection = null;
 
-        try {
+        URL url = new URL(URL_CONTEXT+service);
 
-            URL url = new URL(URL_CONTEXT);
+        connection = (HttpURLConnection) url.openConnection();
+        connection.setDoOutput(true);
+        connection.setDoInput(true);
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/json");
 
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setConnectTimeout(10000);
-            connection.setReadTimeout(15000);
-            connection.connect();
+        connection.connect();
 
+        DataOutputStream stream = new DataOutputStream(connection.getOutputStream());
 
-        } finally {
+        stream.writeBytes(json.toString());
 
-            connection.disconnect();
-        }
+        stream.flush();
+        stream.close();
 
-        return connection;
-    }
+        int httpCode = connection.getResponseCode();
+        String content = getHttpContent(connection);
 
-    public static void sendJsonPostRequest(String service, JSONObject json) {
-        try {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(URL_CONTEXT+service);
+        connection.disconnect();
 
-            String jsonS = json.toString();
+        Response response = new Response(httpCode, content);
 
-            StringEntity se = new StringEntity(json);
-
-            httpPost.setEntity(se);
-            httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-
-            HttpResponse httpResponse = httpclient.execute(httpPost);
-
-        } catch (Exception e) {
-            Log.d("InputStream", e.getLocalizedMessage());
-        }
+        return response;
     }
 
     public static String getHttpContent(HttpURLConnection connection) {
