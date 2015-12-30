@@ -72,6 +72,7 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Response> {
         try {
 
             int status = response.getStatusCodeHttp();
+            Log.i("NotificationWearApp", response.getContentValue());
             JSONObject json = new JSONObject(response.getContentValue());
 
             if (status == HttpURLConnection.HTTP_OK) {
@@ -87,6 +88,7 @@ public class LoginAsyncTask extends AsyncTask<String, Void, Response> {
         } catch (JSONException e) {
 
             Log.e("NotificationWearApp", "JSONException");
+            Toast.makeText(context, "Mensagem: Usuário ou senha incorretos. ", Toast.LENGTH_LONG).show();
         }
     }
 
