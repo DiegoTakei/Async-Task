@@ -18,7 +18,7 @@ import java.net.URL;
  */
 public class HttpService {
 
-    private static final String URL_CONTEXT = "http://192.168.1.178:8080/rest-servlet-service/";
+    private static final String URL_CONTEXT = "http://192.168.1.4:8080/rest-servlet-service/";
 
     public static Response sendJsonPostRequest(String service, JSONObject json)
             throws MalformedURLException, IOException {

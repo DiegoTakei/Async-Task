@@ -13,7 +13,7 @@ tools:context=".MyActivity">
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Nome"
-        android:id="@+id/nomeEditText" />
+        android:id="@+id/nomeText" />
 
     <EditText
     android:layout_width="match_parent"
@@ -26,14 +26,14 @@ tools:context=".MyActivity">
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Senha"
-        android:id="@+id/senhaEditText" />
+        android:id="@+id/senhaText" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/editText" />
+        android:id="@+id/senhaEditText" />
 
     <Button
     android:layout_width="wrap_content"
